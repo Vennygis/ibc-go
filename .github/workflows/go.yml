@@ -1,0 +1,248 @@
+# This workflow will build a golang project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+
+name: Go
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.20'
+
+    - name: Build
+      run: go build -v ./...
+
+    - name: Test
+      run: go test -v ./...
+- name: Setup .NET Core SDK
+  uses: actions/setup-dotnet@v6.1.0
+  with:
+    # Optional SDK version(s) to use. If not provided, will install global.json version when available. Examples: 2.2.104, 3.1, 3.1.x, 3.x, 6.0.2xx, latest
+    dotnet-version: # optional
+    # Optional quality of the build. The possible values are: daily, preview, ga.
+    dotnet-quality: # optional
+    # Optional channel for the installation. The possible values are: STS, LTS, A.B (e.g. 8.0), A.B.Cxx (e.g. 8.0.1xx, available since 5.0). To be used with "dotnet-version: latest".
+    dotnet-channel: # optional
+    # Optional. When true, skips the LTS runtime pre-pass and installs only the requested dotnet-version. Default: false.
+    skip-lts-prepass: # optional
+    # Optional global.json location, if your global.json isn't located in the root of the repo.
+    global-json-file: # optional
+    # Optional package source for which to set up authentication. Will consult any existing NuGet.config in the root of the repo and provide a temporary NuGet.config using the NUGET_AUTH_TOKEN environment variable as a ClearTextPassword
+    source-url: # optional
+    # Optional OWNER for using packages from GitHub Package Registry organizations/users other than the current repository's owner. Only used if a GPR URL is also provided in source-url
+    owner: # optional
+    # Optional NuGet.config location, if your NuGet.config isn't located in the root of the repo.
+    config-file: # optional
+    # Optional input to enable caching of the NuGet global-packages folder
+    cache: # optional
+    # Used to specify the path to a dependency file: packages.lock.json. Supports wildcards or a list of file names for caching multiple dependencies.
+    cache-dependency-path: # optional
+    # Optional SDK workloads to install for additional platform support. Examples: wasm-tools, maui, aspire.
+    workloads: # optional
+    # Optional architecture for the .NET install. Supported values: x64, x86, arm64, amd64, arm, s390x, ppc64le, riscv64. If not set, the installer auto-detects the current system architecture.
+    architecture: # optional
+    # Optional, defaults to true. When false, a locally installed SDK that satisfies the requested version is reused without any network calls, otherwise the latest matching version is installed online. Cross-architecture requests always install online. Falls back to the DOTNET_CHECK_LATEST environment variable when this input is not set.
+    check-latest: # optional
+    - name: go-task/setup-task
+  # You may pin to the exact commit or the version.
+  # uses: go-task/setup-task@a00fbb05ce67b35648be3c78cbc9fd85354c757e
+  uses: go-task/setup-task@v2.2.0
+  with:
+    # Version to use. Example: 3.4.2
+    version: # default is 3.x
+    # Token with permissions to do repo things
+    repo-token: # optional, default is ${{ github.token }}
+    # Maximum number of retry attempts for HTTP requests
+    max-retries: # optional, default is 3
+    # Expected SHA256 checksum of the downloaded Task archive
+    checksum: # optional
+    - name: Add To GitHub projects
+  uses: actions/add-to-project@v2.0.1
+  with:
+    # URL of the project to add issues to
+    project-url: 
+    # A GitHub personal access token with write access to the project
+    github-token: 
+    # A comma-separated list of labels to use as a filter for issue to be added
+    labeled: # optional, default is 
+    # The behavior of the labels filter, AND to match all labels, OR to match any label, NOT to exclude any listed label (default is OR)
+    label-operator: # optional, default is OR
+    - name: Create repository (Personal or Organization)
+  # You may pin to the exact commit or the version.
+  # uses: OneComputerGuy/repo-management@fecb9c54e51d99196bf7fffbb2258f5c67fef125
+  uses: OneComputerGuy/repo-management@v1.0.2
+  with:
+    # String - Name of the account where the repository will be created
+    account: 
+    # String - Name of repository to be created
+    name: 
+    # Your account's GitHub token
+    githubToken: 
+    # String - Description of repository to be created
+    description: # optional, default is 
+    # Boolean - Is the repository private
+    access: # optional, default is false
+    # String - Access level ('private' or 'public')
+    visibility: # optional, default is public
+    # Does the repository allows issues
+    issues: # optional, default is false
+    - name: github-action-auto-format
+  # You may pin to the exact commit or the version.
+  # uses: cloudposse/github-action-auto-format@970af4c15a720047204400fe5b5ae52fb2991e9b
+  uses: cloudposse/github-action-auto-format@v0.12.0
+  with:
+    # The path on the github-runner where the auto-format action scripts are checked out at runtime
+    actions-files-checkout-path: # optional, default is github-action-auto-format
+    # GitHub username for writing new commits
+    bot-name: # optional, default is cloudpossebot
+    # Email address associated with the GitHub user for writing new commits
+    bot-email: # optional
+    # Name of formatting task to execute. (Options include: readme, github, terraform, and context.)
+    format-task: 
+    # GitHub Token for use in `github_format.sh` and PR creation steps. This token must be granted `workflows` permissions.
+    workflow-token: 
+    - name: cagent Runner
+  # You may pin to the exact commit or the version.
+  # uses: docker/cagent-action@c22076b8856ee12d9b4c4685bb49cf26eb974079
+  uses: docker/cagent-action@v1.5.0
+  with:
+    # Agent identifier (e.g., docker/code-analyzer from Docker Hub, or path to .yaml file)
+    agent: 
+    # Prompt to pass to the agent. If not provided, uses a default based on the agent type
+    prompt: # optional
+    # Install mcp-gateway (true/false)
+    mcp-gateway: # optional, default is false
+    # Version of mcp-gateway to use (specifying this will enable mcp-gateway installation)
+    mcp-gateway-version: # optional, default is v0.22.0
+    # Anthropic API key for Claude models (at least one API key required)
+    anthropic-api-key: # optional
+    # OpenAI API key (at least one API key required)
+    openai-api-key: # optional
+    # Google API key for Gemini models (at least one API key required)
+    google-api-key: # optional
+    # AWS Bearer token for Bedrock models (at least one API key required)
+    aws-bearer-token-bedrock: # optional
+    # xAI API key for Grok models (at least one API key required)
+    xai-api-key: # optional
+    # Nebius API key (at least one API key required)
+    nebius-api-key: # optional
+    # Mistral API key (at least one API key required)
+    mistral-api-key: # optional
+    # GitHub token for API access (defaults to github.token)
+    github-token: # optional
+    # Timeout in seconds for agent execution (0 for no timeout)
+    timeout: # optional, default is 0
+    # Enable debug mode with verbose logging (true/false)
+    debug: # optional, default is false
+    # Working directory to run the agent in
+    working-directory: # optional, default is .
+    # Enable yolo mode - auto-approve all prompts (true/false)
+    yolo: # optional, default is true
+    # Maximum number of retries on failure (0 = no retries)
+    max-retries: # optional, default is 2
+    # Base delay in seconds between retries (doubles each attempt)
+    retry-delay: # optional, default is 5
+    # Additional arguments to pass to docker agent run
+    extra-args: # optional, default is 
+    # Comma-separated list of files to append to the prompt (e.g., 'AGENTS.md,CLAUDE.md')
+    add-prompt-files: # optional, default is 
+    # Skip writing agent output to the job summary (useful when callers write their own summary)
+    skip-summary: # optional, default is false
+    # PAT with read:org scope for org membership authorization checks (preferred over author_association)
+    org-membership-token: # optional, default is 
+    # GitHub organization to check membership against (used with org-membership-token)
+    auth-org: # optional, default is 
+    # Skip the built-in authorization check (use when the calling workflow already performed its own auth)
+    skip-auth: # optional, default is false
+    - name: Runner environment
+  # You may pin to the exact commit or the version.
+  # uses: msansoni/runner-environment-action@df8592290918aa26e0e6b0ad5381d705c0abea9b
+  uses: msansoni/runner-environment-action@v1
+  - name: Google Cloud Artifact Registry Action for gcloud self-hosted runners
+  # You may pin to the exact commit or the version.
+  # uses: pass-culture-github-actions/artifact-registry@80e3446b31e19b1b027dc67aa5b3f499d86ea121
+  uses: pass-culture-github-actions/artifact-registry@v1.0.0
+  with:
+    # GCP workload identity provider used to retrieve secrets used for artifact registry auth
+    workload-identity-provider: # optional
+    # GCP service-account used to retrieve secrets used for artifact registry auth
+    service-account: # optional
+    # GCP workload identity provider used to retrieve secrets used for artifact registry auth
+    secret-workload-identity-provider-artifact-registry: 
+    # GCP service-account used to retrieve secrets used for artifact registry auth
+    secret-service-account-artifact-registry: 
+    # GCP zone where the artifact registry is hosted
+    gcp-zone: 
+    # GCP project id where the artifact registry is hosted
+    gcp-project-id: 
+    # GCP registry id
+    gcp-registry-id: 
+    # package-lock.json file path
+    package-lock-file-path: # optional, default is package-lock.json
+    # yarn.lock file path
+    yarn-lock-file-path: # optional, default is yarn.lock
+    - name: Self-Hosted GitHub Actions Runner on Google Cloud
+  # You may pin to the exact commit or the version.
+  # uses: Cyclenerd/gce-github-runner@8e525f1156c9afac023a943187c844c8e03fe6a7
+  uses: Cyclenerd/gce-github-runner@v1.1.0
+  with:
+    # Wait up to 'delete_wait' retries (10 sec each) to delete the Compute Engine VM via the gcloud CLI (default: 360 = 1 hour).
+    delete_wait: # optional, default is 360
+    # Boot disk size in GB for the Compute Engine VM.
+    disk_size: # optional, default is 40
+    # Boot disk type for the Compute Engine VM (e.g. 'pd-standard', 'pd-balanced', 'pd-ssd').
+    disk_type: # optional, default is pd-balanced
+    # Attach an external (public) IPv4 address to the VM (true/false). Warning: The GitHub API requires outbound internet access. Without an external IP you must provide an alternative route to the internet (e.g. Cloud NAT). Default is true.
+    enable_external_ip: # optional, default is true
+    # Fine-grained GitHub Personal Access Token (PAT) with 'Read and write' access to 'Administration' assigned.
+    github_token: 
+    # Name of a specific Compute Engine image to create the VM from. If set, takes precedence over 'image_family'.
+    image: # optional, default is null
+    # Image family to create the VM from (e.g. 'ubuntu-2404-lts-amd64').
+    image_family: # optional, default is ubuntu-2404-lts-amd64
+    # Project against which 'image' or 'image_family' is resolved (e.g. 'ubuntu-os-cloud').
+    image_project: # optional, default is ubuntu-os-cloud
+    # Machine type the VM should be created with (e.g. 'e2-medium', 'n2-standard-4').
+    machine_type: # optional, default is e2-medium
+    # Maximum run duration before the VM is automatically terminated. Accepts the gcloud duration format (e.g. '4h', '30m', '14400s') or a plain number of seconds. This is a safety limit to avoid orphaned VMs if 'delete' mode never runs.
+    max_run_duration: # optional, default is 4h
+    # Choose either 'create' to create a new GitHub Actions Runner or 'delete' to delete a previously created one.
+    mode: 
+    # The name for the VM and label for the GitHub Actions Runner (must be unique within the project and conform to RFC1035: lowercase letters, digits and hyphens; must start with a letter).
+    name: # optional
+    # Name of the VPC network the VM's network interface should be attached to.
+    network: # optional, default is default
+    # Specifies bash commands to run before the GitHub Actions Runner starts. It's useful for installing dependencies with apt-get, dnf, zypper etc.
+    pre_runner_script: # optional
+    # Google Cloud project ID in which the VM should be created or deleted. If omitted, the default project configured in the gcloud CLI is used.
+    project: # optional, default is null
+    # GitHub Actions Runner installation directory (created automatically; no trailing slash).
+    runner_dir: # optional, default is /actions-runner
+    # Wait up to 'runner_wait' retries (10 sec each) for runner registration (default: 10 minutes).
+    runner_wait: # optional, default is 60
+    # GitHub Actions Runner version (omit 'v'; e.g., '2.321.0'). 'latest' will install the latest version. 'skip' will skip the installation. A working installation is expected in the 'runner_dir'.
+    runner_version: # optional, default is latest
+    # Service account email to attach to the VM. If omitted the project default Compute Engine service account is used.
+    service_account: # optional, default is null
+    # Comma separated list of access scopes for the attached service account.
+    scopes: # optional, default is cloud-platform
+    # Subnetwork name or comma-separated list of subnetwork names (one per zone) the VM's network interface should be attached to. If a single value is provided it is used for all zones. If omitted, GCP automatically selects the subnetwork from the network.
+    subnet: # optional, default is null
+    # Comma separated list of network tags to apply to the VM (e.g. for firewall rules).
+    tags: # optional, default is null
+    # Wait up to 'vm_wait' retries (10 sec each) for the Compute Engine VM to start running (default: 30 = 5 min).
+    vm_wait: # optional, default is 30
+    # Compute Engine zone or comma-separated list of zones to create the VM in (e.g. 'europe-west1-b, us-central1-a'). The action loops through the list of zones and uses the first zone where the VM creation succeeds.
+    zone: # optional, default is europe-west1-b
